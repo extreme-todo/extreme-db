@@ -1,0 +1,32 @@
+# fly.toml file generated for extreme-db on 2023-04-07T12:05:37+09:00
+
+app = "extreme-db"
+kill_signal = "SIGINT"
+kill_timeout = 5
+primary_region = "hkg"
+
+[build]
+  image = "mysql:latest"
+
+[experimental]
+  cmd = [
+    "--default-authentication-plugin", "mysql_native_password",
+    "--datadir", "/data/mysql",
+    "--performance-schema=OFF",
+    "--innodb-buffer-pool-size", "64M"
+  ]
+  args = [
+    "--bind-address", "::",
+    "--bind-address", "fdaa:0:fa5b:a7b:a7:1f97:fd78:2"
+  ]
+
+[mounts]
+  destination = "/data"
+  source = "mysqldata"
+
+[[services]]
+  internal_port = 3306
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 3306
